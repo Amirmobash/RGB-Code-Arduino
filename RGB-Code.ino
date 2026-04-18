@@ -1,130 +1,108 @@
-/*
-  RGB-LED Effektcode
-  Erstellt / verbessert für: Amir Mobasher
-*/
-
-const byte ROT_PIN   = 11;
-const byte GRUEN_PIN = 9;
-const byte BLAU_PIN  = 5;
+const byte rotPin = 11;
+const byte gruenPin = 9;
+const byte blauPin = 5;
 
 void setup() {
-  pinMode(ROT_PIN, OUTPUT);
-  pinMode(GRUEN_PIN, OUTPUT);
-  pinMode(BLAU_PIN, OUTPUT);
+  pinMode(rotPin, OUTPUT);
+  pinMode(gruenPin, OUTPUT);
+  pinMode(blauPin, OUTPUT);
 }
 
 void loop() {
-  // Unterschiedliche Delays sorgen für schnelle und langsame Effekte
-  fade(2);
-  fade(2);
-  fade(2);
+  uebergang(2);
+  uebergang(2);
+  uebergang(2);
 
-  stroboskop(300);
-  stroboskop(300);
-  stroboskop(300);
+  schnellWechsel(300);
+  schnellWechsel(300);
+  schnellWechsel(300);
 
-  fade(10);
+  uebergang(10);
 
-  stroboskop(100);
-  stroboskop(100);
-  stroboskop(100);
-  stroboskop(100);
-  stroboskop(100);
+  schnellWechsel(100);
+  schnellWechsel(100);
+  schnellWechsel(100);
+  schnellWechsel(100);
+  schnellWechsel(100);
 }
 
-// Schaltet alle Farben aus
-void aus() {
-  setzeRot(0);
-  setzeGruen(0);
-  setzeBlau(0);
+void allesAus() {
+  farbeSetzen(0, 0, 0);
 }
 
-// Schneller Farbwechsel / Stroboskop-Effekt
-void stroboskop(int verzogerung) {
-  zeigeRGB(255, 255, 255); // Weiß
-  delay(verzogerung);
+void schnellWechsel(int pause) {
+  farbeSetzen(255, 255, 255);
+  delay(pause);
 
-  zeigeRGB(0, 255, 255);   // Cyan
-  delay(verzogerung);
+  farbeSetzen(0, 255, 255);
+  delay(pause);
 
-  zeigeRGB(255, 0, 255);   // Lila
-  delay(verzogerung);
+  farbeSetzen(255, 0, 255);
+  delay(pause);
 
-  zeigeRGB(255, 255, 0);   // Gelb
-  delay(verzogerung);
+  farbeSetzen(255, 255, 0);
+  delay(pause);
 
-  zeigeRGB(0, 0, 255);     // Blau
-  delay(verzogerung);
+  farbeSetzen(0, 0, 255);
+  delay(pause);
 
-  zeigeRGB(0, 255, 0);     // Grün
-  delay(verzogerung);
+  farbeSetzen(0, 255, 0);
+  delay(pause);
 
-  zeigeRGB(255, 0, 0);     // Rot
-  delay(verzogerung);
+  farbeSetzen(255, 0, 0);
+  delay(pause);
 }
 
-// Sanfter Übergang zwischen den Farben
-void fade(int verzogerung) {
-  int r = 255;
-  int g = 0;
-  int b = 0;
+void uebergang(int pause) {
+  int rot = 255;
+  int gruen = 0;
+  int blau = 0;
 
-  for (; b <= 255; b++) {
-    zeigeRGB(r, g, b);
-    delay(verzogerung * 3);
-    // Rot wirkt optisch oft dunkler, daher längere Verzögerung
+  while (blau < 255) {
+    blau++;
+    farbeSetzen(rot, gruen, blau);
+    delay(pause * 3);
   }
 
-  for (; r >= 0; r--) {
-    zeigeRGB(r, g, b);
-    delay(verzogerung * 2);
+  while (rot > 0) {
+    rot--;
+    farbeSetzen(rot, gruen, blau);
+    delay(pause * 2);
   }
 
-  for (; g <= 255; g++) {
-    zeigeRGB(r, g, b);
-    delay(verzogerung);
+  while (gruen < 255) {
+    gruen++;
+    farbeSetzen(rot, gruen, blau);
+    delay(pause);
   }
 
-  for (; b >= 0; b--) {
-    zeigeRGB(r, g, b);
-    delay(verzogerung);
+  while (blau > 0) {
+    blau--;
+    farbeSetzen(rot, gruen, blau);
+    delay(pause);
   }
 
-  for (; r <= 255; r++) {
-    zeigeRGB(r, g, b);
-    delay(verzogerung * 2);
+  while (rot < 255) {
+    rot++;
+    farbeSetzen(rot, gruen, blau);
+    delay(pause * 2);
   }
 
-  for (; g >= 0; g--) {
-    zeigeRGB(r, g, b);
-    delay(verzogerung * 3);
-  }
-}
-
-// Zeigt eine RGB-Farbe an
-void zeigeRGB(int r, int g, int b) {
-  setzeRot(r);
-  setzeGruen(g);
-  setzeBlau(b);
-}
-
-// Setzt die rote Helligkeit
-void setzeRot(int wert) {
-  if (wert >= 0 && wert <= 255) {
-    analogWrite(ROT_PIN, wert);
+  while (gruen > 0) {
+    gruen--;
+    farbeSetzen(rot, gruen, blau);
+    delay(pause * 3);
   }
 }
 
-// Setzt die grüne Helligkeit
-void setzeGruen(int wert) {
-  if (wert >= 0 && wert <= 255) {
-    analogWrite(GRUEN_PIN, wert);
-  }
+void farbeSetzen(int rot, int gruen, int blau) {
+  analogWrite(rotPin, begrenzen(rot));
+  analogWrite(gruenPin, begrenzen(gruen));
+  analogWrite(blauPin, begrenzen(blau));
 }
 
-// Setzt die blaue Helligkeit
-void setzeBlau(int wert) {
-  if (wert >= 0 && wert <= 255) {
-    analogWrite(BLAU_PIN, wert);
-  }
+int begrenzen(int wert) {
+  if (wert < 0) return 0;
+  if (wert > 255) return 255;
+  return wert;
 }
