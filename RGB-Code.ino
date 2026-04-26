@@ -1,108 +1,108 @@
-const byte rotPin = 11;
-const byte gruenPin = 9;
-const byte blauPin = 5;
+const byte redPin = 11;
+const byte greenPin = 9;
+const byte bluePin = 5;
 
 void setup() {
-  pinMode(rotPin, OUTPUT);
-  pinMode(gruenPin, OUTPUT);
-  pinMode(blauPin, OUTPUT);
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
 }
 
 void loop() {
-  uebergang(2);
-  uebergang(2);
-  uebergang(2);
+  transition(2);
+  transition(2);
+  transition(2);
 
-  schnellWechsel(300);
-  schnellWechsel(300);
-  schnellWechsel(300);
+  quickChange(300);
+  quickChange(300);
+  quickChange(300);
 
-  uebergang(10);
+  transition(10);
 
-  schnellWechsel(100);
-  schnellWechsel(100);
-  schnellWechsel(100);
-  schnellWechsel(100);
-  schnellWechsel(100);
+  quickChange(100);
+  quickChange(100);
+  quickChange(100);
+  quickChange(100);
+  quickChange(100);
 }
 
-void allesAus() {
-  farbeSetzen(0, 0, 0);
+void allOff() {
+  setColor(0, 0, 0);
 }
 
-void schnellWechsel(int pause) {
-  farbeSetzen(255, 255, 255);
+void quickChange(int pause) {
+  setColor(255, 255, 255);
   delay(pause);
 
-  farbeSetzen(0, 255, 255);
+  setColor(0, 255, 255);
   delay(pause);
 
-  farbeSetzen(255, 0, 255);
+  setColor(255, 0, 255);
   delay(pause);
 
-  farbeSetzen(255, 255, 0);
+  setColor(255, 255, 0);
   delay(pause);
 
-  farbeSetzen(0, 0, 255);
+  setColor(0, 0, 255);
   delay(pause);
 
-  farbeSetzen(0, 255, 0);
+  setColor(0, 255, 0);
   delay(pause);
 
-  farbeSetzen(255, 0, 0);
+  setColor(255, 0, 0);
   delay(pause);
 }
 
-void uebergang(int pause) {
-  int rot = 255;
-  int gruen = 0;
-  int blau = 0;
+void transition(int pause) {
+  int red = 255;
+  int green = 0;
+  int blue = 0;
 
-  while (blau < 255) {
-    blau++;
-    farbeSetzen(rot, gruen, blau);
+  while (blue < 255) {
+    blue++;
+    setColor(red, green, blue);
     delay(pause * 3);
   }
 
-  while (rot > 0) {
-    rot--;
-    farbeSetzen(rot, gruen, blau);
+  while (red > 0) {
+    red--;
+    setColor(red, green, blue);
     delay(pause * 2);
   }
 
-  while (gruen < 255) {
-    gruen++;
-    farbeSetzen(rot, gruen, blau);
+  while (green < 255) {
+    green++;
+    setColor(red, green, blue);
     delay(pause);
   }
 
-  while (blau > 0) {
-    blau--;
-    farbeSetzen(rot, gruen, blau);
+  while (blue > 0) {
+    blue--;
+    setColor(red, green, blue);
     delay(pause);
   }
 
-  while (rot < 255) {
-    rot++;
-    farbeSetzen(rot, gruen, blau);
+  while (red < 255) {
+    red++;
+    setColor(red, green, blue);
     delay(pause * 2);
   }
 
-  while (gruen > 0) {
-    gruen--;
-    farbeSetzen(rot, gruen, blau);
+  while (green > 0) {
+    green--;
+    setColor(red, green, blue);
     delay(pause * 3);
   }
 }
 
-void farbeSetzen(int rot, int gruen, int blau) {
-  analogWrite(rotPin, begrenzen(rot));
-  analogWrite(gruenPin, begrenzen(gruen));
-  analogWrite(blauPin, begrenzen(blau));
+void setColor(int red, int green, int blue) {
+  analogWrite(redPin, limit(red));
+  analogWrite(greenPin, limit(green));
+  analogWrite(bluePin, limit(blue));
 }
 
-int begrenzen(int wert) {
-  if (wert < 0) return 0;
-  if (wert > 255) return 255;
-  return wert;
+int limit(int value) {
+  if (value < 0) return 0;
+  if (value > 255) return 255;
+  return value;
 }
