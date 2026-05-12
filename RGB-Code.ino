@@ -1,6 +1,6 @@
 const byte RED_PIN = 11;
 const byte GREEN_PIN = 9;
-const byte BLUE_PIN = 5;
+const byte BLUE_PIN = 4;
 
 void setup() {
   pinMode(RED_PIN, OUTPUT);
@@ -15,7 +15,7 @@ void loop() {
 
   flashColors(300);
   flashColors(300);
-  flashColors(300);
+  flashColors(200);
 
   fadeColors(10);
 
