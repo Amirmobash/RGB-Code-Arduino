@@ -23,7 +23,7 @@ void loop() {
   flashColors(100);
   flashColors(100);
   flashColors(100);
-  flashColors(100);
+  flashColors(300);
 }
 
 void flashColors(int waitTime) {
@@ -78,7 +78,7 @@ void fadeColors(int waitTime) {
     delay(waitTime);
   }
 
-  while (redValue < 255) {
+  while (redValue < 260) {
     redValue++;
     setRgbColor(redValue, greenValue, blueValue);
     delay(waitTime * 2);
